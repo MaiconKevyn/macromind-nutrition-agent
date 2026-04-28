@@ -1,0 +1,51 @@
+services:
+  bot:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - audio_data:/app/data/audio
+      - reports_data:/app/data/reports
+    depends_on:
+      langfuse:
+        condition: service_healthy
+        required: false
+
+  # ── Observabilidade opcional (Langfuse self-hosted) ───────────
+  langfuse:
+    image: langfuse/langfuse:latest
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://langfuse:langfuse@langfuse_db:5432/langfuse
+      NEXTAUTH_SECRET: change-me-in-production
+      NEXTAUTH_URL: http://localhost:3000
+      SALT: change-me-in-production
+    depends_on:
+      langfuse_db:
+        condition: service_healthy
+    profiles:
+      - observability
+
+  langfuse_db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: langfuse
+      POSTGRES_PASSWORD: langfuse
+      POSTGRES_DB: langfuse
+    volumes:
+      - langfuse_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U langfuse"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    profiles:
+      - observability
+
+volumes:
+  audio_data:
+  reports_data:
+  langfuse_db_data:

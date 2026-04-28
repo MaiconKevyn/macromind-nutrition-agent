@@ -1,0 +1,78 @@
+[project]
+name = "macromind-nutrition-agent"
+version = "0.1.0"
+description = "Agente nutricional via Telegram — registra refeições por áudio e gera relatórios semanais"
+requires-python = ">=3.11"
+dependencies = [
+    # Telegram
+    "python-telegram-bot[job-queue]>=21.0",
+    # STT
+    "openai>=1.30",
+    # LLM / agent
+    "anthropic>=0.28",
+    "langgraph>=0.2",
+    "langchain-core>=0.2",
+    # Structured output
+    "pydantic>=2.7",
+    "pydantic-settings>=2.3",
+    # DB
+    "sqlalchemy>=2.0",
+    "asyncpg>=0.29",
+    "psycopg[binary]>=3.2",
+    "alembic>=1.13",
+    # Scheduling
+    "apscheduler>=3.10",
+    # HTTP client
+    "httpx>=0.27",
+    # Logging
+    "structlog>=24.2",
+    # Text matching
+    "rapidfuzz>=3.9",
+    # Reports / charts
+    "matplotlib>=3.9",
+    "pandas>=2.2",
+    # Utils
+    "python-dotenv>=1.0",
+    "tenacity>=8.3",
+    "groq>=1.2.0",
+]
+
+[project.scripts]
+macromind = "src.bot.main:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.2",
+    "pytest-asyncio>=0.23",
+    "pytest-cov>=5.0",
+    "mypy>=1.10",
+    "ruff>=0.5",
+    "pre-commit>=3.7",
+    # Stubs
+    "types-python-dateutil>=2.9",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "ANN"]
+ignore = ["ANN401"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["ANN"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+ignore_missing_imports = true
+exclude = ["tests/", "scripts/", "eval/"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "--cov=src --cov-report=term-missing -q"
+
+[tool.coverage.run]
+omit = ["tests/*", "scripts/*", "eval/*"]

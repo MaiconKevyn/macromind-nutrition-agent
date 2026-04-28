@@ -1,31 +1,40 @@
-# Ambiente virtual
+# Ambiente
 .venv/
+__pycache__/
+*.py[cod]
+*.pyo
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
 
-# Variáveis de ambiente (contém OPENAI_API_KEY e DATABASE_PATH — NUNCA commitar)
+# Secrets
 .env
+*.env.local
 
-# Arquivos gerados em runtime
-logs/
-reports/
-evaluation/results/results_*.json
-evaluation/results/audit_*.json
-evaluation/results.json
-evaluation/audit_results.json
-
-# Índices de embeddings (gerados via build_indexes.py — reconstituíveis)
-.vector_store/
+# Dados locais
+data/audio/*
+!data/audio/.gitkeep
+data/reports/*
+!data/reports/.gitkeep
+data/*.db
+data/*.sqlite
+data/*.sqlite3
 
 # IDE
 .idea/
-.jbeval/
+.vscode/
+*.iml
 
-# Claude Code interno
-.claude/
+# Docker
+docker-compose.override.yml
 
-# Python
-__pycache__/
-*.py[cod]
-*.egg-info/
-.pytest_cache/
-dist/
-build/
+# macOS
+.DS_Store
+
+# Fly.io
+.fly/
+
+# Alembic
+src/db/migrations/versions/*.py
