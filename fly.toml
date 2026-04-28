@@ -1,0 +1,16 @@
+app = "macromind-nutrition-agent"
+primary_region = "gru"  # São Paulo
+
+[build]
+
+[env]
+LOG_LEVEL = "INFO"
+AUDIO_STORAGE_PATH = "/data/audio"
+
+[mounts]
+  source = "macromind_data"
+  destination = "/data"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"
