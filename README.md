@@ -49,6 +49,7 @@
 - **Comandos de consumo diário** com resumo e histórico
 - **Relatório semanal** com gráfico em imagem
 - **Logs estruturados** para rastrear cada etapa do pipeline
+- **Projeto em evolução contínua**, com melhorias incrementais documentadas no roadmap
 
 ---
 
